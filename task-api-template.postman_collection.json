@@ -1,0 +1,261 @@
+{
+  "info": {
+    "name": "Task API Template",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\"\n}"
+            },
+            "url": { "raw": "http://localhost:8000/api/auth/register", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","auth","register"] }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": { "raw": "http://localhost:8000/api/auth/login", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","auth","login"] }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+            ],
+            "url": { "raw": "http://localhost:8000/api/auth/logout", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","auth","logout"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Projects",
+      "item": [
+        {
+          "name": "List Projects",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": { "raw": "http://localhost:8000/api/projects", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","projects"] }
+          }
+        },
+        {
+          "name": "Create Project",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Website Redesign\",\n  \"description\": \"Redesign company website\",\n  \"status\": \"active\"\n}"
+            },
+            "url": { "raw": "http://localhost:8000/api/projects", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","projects"] }
+          }
+        },
+        {
+          "name": "Update Project",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Website Redesign v2\",\n  \"status\": \"active\"\n}" },
+            "url": { "raw": "http://localhost:8000/api/projects/1", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","projects","1"] }
+          }
+        },
+        {
+          "name": "Delete Project",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": { "raw": "http://localhost:8000/api/projects/1", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","projects","1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tasks",
+      "item": [
+        {
+          "name": "List Tasks with Filters",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": {
+              "raw": "http://localhost:8000/api/projects/1/tasks?status=todo&per_page=15",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api","projects","1","tasks"],
+              "query": [
+                { "key": "status", "value": "todo" },
+                { "key": "per_page", "value": "15" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search Tasks",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": {
+              "raw": "http://localhost:8000/api/projects/1/tasks?search=fix%20bug&per_page=10",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api","projects","1","tasks"],
+              "query": [
+                { "key": "search", "value": "fix bug" },
+                { "key": "per_page", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter Tasks by Date",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": {
+              "raw": "http://localhost:8000/api/projects/1/tasks?due_after=2026-03-22&due_before=2026-04-22",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8000",
+              "path": ["api","projects","1","tasks"],
+              "query": [
+                { "key": "due_after", "value": "2026-03-22" },
+                { "key": "due_before", "value": "2026-04-22" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Task",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Fix login bug\",\n  \"description\": \"Users cannot login with email\",\n  \"status\": \"todo\",\n  \"due_date\": \"2026-04-01T23:59:59Z\",\n  \"assigned_to\": 2,\n  \"priority\": 8\n}"
+            },
+            "url": { "raw": "http://localhost:8000/api/projects/1/tasks", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","projects","1","tasks"] }
+          }
+        },
+        {
+          "name": "Update Task Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"status\": \"in-progress\"\n}" },
+            "url": { "raw": "http://localhost:8000/api/projects/1/tasks/5", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","projects","1","tasks","5"] }
+          }
+        },
+        {
+          "name": "Assign Task",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"assigned_to\": 3\n}" },
+            "url": { "raw": "http://localhost:8000/api/projects/1/tasks/5", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","projects","1","tasks","5"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Comments",
+      "item": [
+        {
+          "name": "List Task Comments",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": { "raw": "http://localhost:8000/api/projects/1/tasks/5/comments", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","projects","1","tasks","5","comments"] }
+          }
+        },
+        {
+          "name": "Add Comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"content\": \"I am working on this issue\"\n}" },
+            "url": { "raw": "http://localhost:8000/api/projects/1/tasks/5/comments", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","projects","1","tasks","5","comments"] }
+          }
+        },
+        {
+          "name": "Update Comment",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"content\": \"Updated comment text\"\n}" },
+            "url": { "raw": "http://localhost:8000/api/comments/10", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","comments","10"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Get All Notifications",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": { "raw": "http://localhost:8000/api/notifications?per_page=15", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","notifications"], "query": [{ "key": "per_page", "value": "15" }] }
+          }
+        },
+        {
+          "name": "Get Unread Notifications",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": { "raw": "http://localhost:8000/api/notifications/unread", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","notifications","unread"] }
+          }
+        },
+        {
+          "name": "Mark Notification as Read",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": { "raw": "http://localhost:8000/api/notifications/1/read", "protocol": "http", "host": ["localhost"], "port": "8000", "path": ["api","notifications","1","read"] }
+          }
+        }
+      ]
+    }
+  ]
+}
