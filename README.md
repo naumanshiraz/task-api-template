@@ -1,104 +1,78 @@
-# Senior PHP Backend Developer – Coding Assessment
+# Collaborative Task Management API
 
-Thank you for taking the time to complete this assessment.  
-The goal is to demonstrate how you approach architecture, testing, and backend engineering best practices.
+A ready-to-use API to manage projects, tasks, comments, and notifications, built in a clean way and fully tested.
 
----
+## 🏗️ Architecture Overview
 
-## 📖 Project: Collaborative Task Management API
+This project follows a **layered architecture** pattern:
 
-### Objective
-Build a REST API for managing projects, tasks, comments, and notifications.  
-We value **clean architecture, thoughtful design, and code quality** over speed or feature quantity.
+- **Controllers**: Handle HTTP requests/responses
+- **Services**: handle business logic
+- **Repositories**: manage database queries
+- **Models**: represent data
+- **Events/Listeners**: trigger actions when something happens
+- **Jobs**: Asynchronous processing
 
----
+### Design Patterns Used
 
-## ✅ Requirements
+1. **Repository Pattern**: separates database logic from the app
+2. **Service Layer Pattern**: keeps business logic in one place
+3. **Observer Pattern**: runs actions when events happen
+4. **Factory Pattern**: creates test data easily
 
-### Core Features
-- **Authentication**: User registration & login (JWT or Laravel Sanctum).
-- **Projects**: CRUD operations. Each project belongs to a user.
-- **Tasks**:
-  - CRUD operations.
-  - Fields: `title, description, status (todo/in-progress/done), due_date`.
-  - Filtering: by status, due date, full-text search.
-  - Pagination for listing.
-- **Comments**: CRUD operations. Each comment belongs to a task.
-- **Notifications**:
-  - Triggered when a task is assigned or updated.
-  - Delivered asynchronously (e.g., queue).
-  - Endpoint for fetching unseen notifications.
+### Why These Patterns?
 
-### Non-Functional
-- Use a layered architecture (controllers, services, repositories, domain models).
-- Apply at least two meaningful design patterns (e.g., Repository, Strategy, Observer).
-- Database migrations must be included.
-- Cache task listings (e.g., Redis).
-- Add rate limiting for sensitive endpoints.
-- Standardized error handling and responses.
+- **Repository**: makes database work simple and flexible
+- **Service Layer**: keeps all business logic in one place
+- **Observer**: lets actions happen without tight connection
+- **Events**: enable asynchronous processing of notifications
 
-### Testing
-- Unit tests for core services and repositories.
-- Integration tests for API endpoints.
-- Minimum **70% test coverage**.
+## 📋 Requirements Met
 
-### DevOps
-- `Dockerfile` + `docker-compose.yml` for local setup.
-- CI pipeline runs automatically (tests, static analysis, linting, security).
-- Compatible with **PHP 8.2+**.
+✅ **Authentication**: JWT via Laravel Sanctum  
+✅ **Projects**: Full CRUD with ownership  
+✅ **Tasks**: CRUD + filtering, search, pagination  
+✅ **Comments**: Full CRUD  
+✅ **Notifications**: Event-driven, asynchronous queue processing  
+✅ **Caching**: Redis-based task listing cache  
+✅ **Rate Limiting**: Built-in on auth endpoints  
+✅ **Testing**: 70%+ coverage with unit + integration tests  
+✅ **Docker**: Complete containerized setup  
+✅ **CI/CD**: GitHub Actions pipeline  
 
-### Documentation
-- Update this `README.md` to include:
-  - Setup instructions.
-  - Example API requests (curl/Postman).
-  - Explanation of your architectural decisions and trade-offs.
-  - Which design patterns you applied, and why.
+## 🚀 Setup Instructions
 
----
+### Prerequisites
+- Docker & Docker Compose
+- Node.js 18+ (optional, for frontend)
 
-## 🎯 Acceptance Criteria
+### Quick Start (Docker)
 
-Your submission will be evaluated on:
+```bash
+# Clone the repository
+git clone https://github.com/naumanshiraz/task-api-template.git
+cd task-api-template
 
-- **Architecture & Patterns**: Separation of concerns, justified design patterns.
-- **Code Quality & Standards**: PSR-12 compliance, maintainability.
-- **Feature Completeness**: Requirements implemented.
-- **Testing**: Coverage, meaningful cases, edge-case handling.
-- **Documentation**: Clear and professional.
-- **DevOps**: CI/CD awareness, Docker setup.
+# Copy environment file
+cp .env.example .env
 
----
+# Build and start containers
+docker-compose up -d
 
-## 📝 Commit Guidelines
+# Install dependencies
+docker-compose exec app composer install
 
-We value not only the final code but also how you structure your work.  
-Please use **meaningful, structured commit messages** throughout your development.  
+# Generate app key
+docker-compose exec app php artisan key:generate
 
-- Follow [Conventional Commits](https://www.conventionalcommits.org/) style when possible:  
-  - `feat:` – for new features  
-  - `fix:` – for bug fixes  
-  - `chore:` – for setup, configuration, or maintenance  
-  - `test:` – for adding or improving tests  
-  - `docs:` – for documentation changes  
+# Run migrations
+docker-compose exec app php artisan migrate
 
-- Examples:  
-  - `chore: initial commit (Laravel project setup)`  
-  - `feat: add task CRUD endpoints`  
-  - `fix: correct due date validation logic`  
+# Create test user
+docker-compose exec app php artisan tinker
+# Then run: User::factory()->create(['email' => 'test@example.com', 'password' => Hash::make('password')])
 
-Your commit history will be reviewed as part of the assessment to understand how you approach iteration, problem-solving, and communication through code.
+# Run tests
+docker-compose exec app composer test
 
-
-## 📦 Submission Instructions
-1. Implement your solution inside this repo.
-2. Push to a private GitHub repository.
-3. Invite the following reviewers with **Read**  role: `gh-ewmateam`.
-4. Please complete within 7 days of receiving the assignment.
-5. If you need more time, let us know.
-
-## ℹ️ Notes
-1. The project is designed to take 3–5 hours. We do not expect a production-ready system.
-2. Quality matters more than quantity — partial solutions are acceptable if well-documented.
-3. Document anything you would do differently with more time.
-
-Good luck, and thank you again for your effort!
+# Access API at http://localhost:8000
